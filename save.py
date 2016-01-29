@@ -6,6 +6,7 @@ import os.path
 import os
 import clipboard
 import gc
+import shutil
 
 def loadFolder(sender):
     selection = sender.items[sender.selected_row]
@@ -66,10 +67,7 @@ def save(folder):
         if sFp:
             console.hud_alert('Saving...')
             print 'Destination folder: ', os.path.join(folder, os.path.basename(sFp))
-            with open(sFp, 'rb') as f1:
-                with open(os.path.join(folder, os.path.basename(sFp)), 'wb') as f2:
-                    f2.write(f1.read())
-                    f2.close()
+            shutil.copy(sFp, folder)
             console.hud_alert('Saved')
 
 if __name__ == '__main__':
