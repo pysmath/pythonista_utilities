@@ -8,12 +8,10 @@ import clipboard
 import gc
 import shutil
 
-def loadFolder(sender):
+def loadFolder(sender): #Populate a new list view with the contents of a selected folder and push to the navigation view
     selection = sender.items[sender.selected_row]
     path = os.path.join(sender.path, selection)
     new_view = ui.TableView()
-    new_view.width = 400
-    new_view.height = 400
     new_view.name = selection
     new_data = ui.ListDataSource(next(os.walk(path))[1])
     new_data.action = loadFolder
@@ -22,26 +20,22 @@ def loadFolder(sender):
     new_view.delegate = new_data
     sender.tableview.navigation_view.push_view(new_view)
 
-def find_current_view(nv):
+def find_current_view(nv): #Find the currently open folder when the select button is pushed
     for v in gc.get_objects():
         if hasattr(v, 'navigation_view') and v.navigation_view == nv and not v.superview:
             return v
     return None
 
-def makeSelection(sender):
+def makeSelection(sender): #Select the currently open folder and move on to the saving process
     current_view = find_current_view(picker).data_source.path
     picker.close()
     clipboard.set(current_view)
     return current_view
 
-def folder_picker():
-    width = 400
-    height = 400
+def folder_picker(): #Initialize the folder picker
     home_dir = os.path.expanduser('~/Documents/')
     
     top = ui.TableView()
-    top.width = width
-    top.height = height
     top.name = '~/Documents'
     
     top_data = ui.ListDataSource(next(os.walk(home_dir))[1])
@@ -54,8 +48,6 @@ def folder_picker():
     select_button = ui.ButtonItem(action = makeSelection, title = 'Select')
     
     main = ui.NavigationView(top)
-    main.width = width
-    main.height = height
     main.right_button_items = [select_button]
     main.current_view = home_dir
     
