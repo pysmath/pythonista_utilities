@@ -33,7 +33,7 @@ def makeSelection(sender): #Select the currently open folder and move on to the 
     return current_view
 
 def folder_picker(): #Initialize the folder picker
-    home_dir = os.path.expanduser('~/Documents/')
+    home_dir = os.getcwd().split('Documents/')[0] + 'Documents/'
     
     top = ui.TableView()
     top.name = '~/Documents'
